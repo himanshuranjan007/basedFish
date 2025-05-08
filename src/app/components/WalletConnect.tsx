@@ -3,7 +3,7 @@
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Wallet, Copy, AlertCircle } from "lucide-react";
+import { WalletIcon, DocumentDuplicateIcon, ExclamationCircleIcon } from "@heroicons/react/24/outline";
 import { toast } from "sonner";
 
 export const WalletConnect = () => {
@@ -25,7 +25,7 @@ export const WalletConnect = () => {
     <>
       {error && (
         <Alert variant="destructive" className="mb-6 slide-in-from-top animate-in">
-          <AlertCircle className="h-4 w-4" />
+          <ExclamationCircleIcon className="h-4 w-4" />
           <AlertTitle>Error</AlertTitle>
           <AlertDescription>{error.message}</AlertDescription>
         </Alert>
@@ -43,7 +43,7 @@ export const WalletConnect = () => {
                 className="h-5 w-5 text-[#1453EE]" 
                 onClick={() => account.address && copyToClipboard(account.address)}
               >
-                <Copy className="h-3 w-3" />
+                <DocumentDuplicateIcon className="h-3 w-3" />
               </Button>
             </div>
             <Button 
@@ -65,7 +65,7 @@ export const WalletConnect = () => {
                 size="sm"
                 className="flex items-center gap-1.5 bg-[#1453EE] hover:bg-[#1453EE]/90 text-white"
               >
-                <Wallet className="h-4 w-4" />
+                <WalletIcon className="h-4 w-4" />
                 Sign In
               </Button>
             ))}
