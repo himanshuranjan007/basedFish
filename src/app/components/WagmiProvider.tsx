@@ -5,14 +5,30 @@ import { WagmiProvider } from "wagmi";
 import { parseEther, toHex } from "viem";
 import { http, cookieStorage, createConfig, createStorage } from "wagmi";
 import { baseSepolia } from "wagmi/chains";
-import { coinbaseWallet } from "wagmi/connectors";
+import { coinbaseWallet, type CoinbaseWalletParameters } from "wagmi/connectors";
 
-export const cbWalletConnector = coinbaseWallet({
+// Extend the CoinbaseWalletParameters type with our custom properties
+type ExtendedCoinbaseWalletConfig = CoinbaseWalletParameters & {
+  preference?: {
+    keysUrl: string;
+  };
+  subAccounts?: {
+    enableAutoSubAccounts: boolean;
+    defaultSpendLimits: {
+      [chainId: number]: Array<{
+        token: string;
+        allowance: string;
+        period: number;
+      }>;
+    };
+  };
+};
+
+const walletConfig: ExtendedCoinbaseWalletConfig = {
   appName: "Coin Your Bangers",
   preference: {
     keysUrl: "https://keys-dev.coinbase.com/connect",
   },
-  // @ts-expect-error: subAccounts is not in the type definition but is supported at runtime
   subAccounts: {
     enableAutoSubAccounts: true,
     defaultSpendLimits: {
@@ -25,7 +41,9 @@ export const cbWalletConnector = coinbaseWallet({
       ],
     },
   },
-} as any);
+};
+
+export const cbWalletConnector = coinbaseWallet(walletConfig);
 
 export function getConfig() {
   return createConfig({
